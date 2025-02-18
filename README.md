@@ -39,28 +39,28 @@
 
 ### **3. 搜尋影片**
 - 在輸入框內輸入關鍵字，點擊「搜尋」按鈕，系統會顯示搜尋結果。  
-![首頁搜尋畫面](images/首頁搜尋畫面.jpg)  
+![首頁搜尋畫面](images/Home_search_screen.jpg)  
 
 
 ### **4. 選擇下載格式**
 - 在搜尋結果中，選擇你要下載的影片，並按下下載。
 - 會跳轉到下載畫面中，選擇 **MP4（影片）** 或 **MP3（音樂）**。
-![搜尋結果畫面](images/搜尋結果畫面.jpg)  
-![影片音樂下載](images/影片音樂下載.jpg)  
+![搜尋結果畫面](images/Search_results_screen.jpg)  
+![影片音樂下載](images/Video_music_download.jpg)  
 
 ### **5. 開始下載**
 - 點擊「下載」按鈕，系統將自動處理並下載檔案。  
-![影片音樂下載](images/影片音樂下載.jpg) 
+![影片音樂下載](images/Video_music_download.jpg) 
 
 ### **6. 播放已下載內容**
 - 進入「影片清單」或「音樂清單」頁面，點選已下載的影片或音樂，即可使用內建播放器觀看或收聽。 
     
 影片清單畫面
-![影片畫面](images/影片畫面.jpg) 
-![點選影片畫面](images/點選影片畫面.jpg)
+![影片畫面](images/Video_Screen.jpg) 
+![點選影片畫面](images/Click_on_the_video_screen.jpg)
 
 音樂清單畫面
-![音樂撥放畫面](images/音樂撥放畫面.jpg)
+![音樂撥放畫面](images/Music_player_interface.jpg)
 ---
 
 ## **專案目錄與檔案說明**
