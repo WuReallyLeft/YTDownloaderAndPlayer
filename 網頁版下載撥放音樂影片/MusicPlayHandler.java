@@ -1,4 +1,3 @@
-package ç¶²é ç‰ˆä¸‹è¼‰æ’¥æ”¾éŸ³æ¨‚å½±ç‰‡;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -13,13 +12,13 @@ public class MusicPlayHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
         String query = exchange.getRequestURI().getQuery();
 
-        // ï¿½Ï¥ï¿½ parseParameter ï¿½ÑªR filePath ï¿½Ñ¼ï¿½
+        // ¨Ï¥Î parseParameter ¸ÑªR filePath °Ñ¼Æ
         String filePath = parseParameter(query, "filePath");
 
         if ("GET".equalsIgnoreCase(method) && filePath != null) {
             handlePlayback(exchange, filePath);
         } else {
-            sendErrorResponse(exchange, "ï¿½Lï¿½Äªï¿½ï¿½Ğ¨Dï¿½Î¯Ê¤Ö°Ñ¼Æ¡I");
+            sendErrorResponse(exchange, "µL®Äªº½Ğ¨D©Î¯Ê¤Ö°Ñ¼Æ¡I");
         }
     }
 
@@ -28,7 +27,7 @@ public class MusicPlayHandler implements HttpHandler {
     File file = new File(filePath);
 
     if (!file.exists() || !file.isFile()) {
-        sendErrorResponse(exchange, "ï¿½É®×¤ï¿½ï¿½sï¿½bï¿½I");
+        sendErrorResponse(exchange, "ÀÉ®×¤£¦s¦b¡I");
         return;
     }
 
@@ -45,14 +44,14 @@ public class MusicPlayHandler implements HttpHandler {
             try {
                 os.write(buffer, 0, bytesRead);
             } catch (IOException e) {
-                System.out.println("ï¿½È¤ï¿½İ¤ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½G" + e.getMessage());
+                System.out.println("«È¤áºİ¤¤¤î³s±µ¡G" + e.getMessage());
                 break;
             }
         }
         os.flush();
-        System.out.println("ï¿½ï¿½ï¿½Ö¶Ç¿é§¹ï¿½ï¿½");
+        System.out.println("­µ¼Ö¶Ç¿é§¹¦¨");
     } catch (IOException e) {
-        System.out.println("ï¿½ï¿½ï¿½Ö¶Ç¿é¥¢ï¿½Ñ¡G" + e.getMessage());
+        System.out.println("­µ¼Ö¶Ç¿é¥¢±Ñ¡G" + e.getMessage());
     }
 }
 

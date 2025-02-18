@@ -1,4 +1,3 @@
-package ç¶²é ç‰ˆä¸‹è¼‰æ’¥æ”¾éŸ³æ¨‚å½±ç‰‡;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -20,12 +19,12 @@ public class MusicListHandler implements HttpHandler {
     private String generatePage(String folderName) throws IOException {
         Path folderPath = Paths.get(folderName);
 
-        // ï¿½Tï¿½{ï¿½ï¿½Æ§ï¿½ï¿½sï¿½b
+        // ½T»{¸ê®Æ§¨¦s¦b
         if (!Files.exists(folderPath) || !Files.isDirectory(folderPath)) {
-            return "<html><body><h1>ï¿½ï¿½Æ§ï¿½ï¿½ï¿½ï¿½sï¿½b: " + folderName + "</h1></body></html>";
+            return "<html><body><h1>¸ê®Æ§¨¤£¦s¦b: " + folderName + "</h1></body></html>";
         }
 
-        // ï¿½ï¿½ï¿½ï¿½É®×²Mï¿½ï¿½Aï¿½Í¦ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½È°ï¿½ï¿½ï¿½ï¿½sï¿½Ñ«È¤ï¿½İ¨Ï¥ï¿½
+        // Àò¨úÀÉ®×²M³æ¡A¥Í¦¨¼½©ñ/¼È°±«ö¶s¨Ñ«È¤áºİ¨Ï¥Î
         String fileList = Files.list(folderPath)
                 .filter(Files::isRegularFile)
                 .map(path -> {
@@ -33,9 +32,9 @@ public class MusicListHandler implements HttpHandler {
                     String filePath = folderPath.resolve(fileName).toString().replace("\\", "/");
                     String fullUrl = "/play-music?filePath=" + filePath;
                     
-                    System.out.println("ï¿½Í¦ï¿½ï¿½ï¿½ URLï¿½G" + fullUrl); // ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½ï¿½ URL ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½x
+                    System.out.println("¥Í¦¨ªº URL¡G" + fullUrl); // ¥´¦L§¹¾ã URL ¨ì¦øªA¾¹±±¨î¥x
                     return "<li>" +
-                           "<button onclick=\"togglePlayPause(this, '" + filePath + "')\">ï¿½ï¿½ï¿½ï¿½</button>" +
+                           "<button onclick=\"togglePlayPause(this, '" + filePath + "')\">¼½©ñ</button>" +
                            " " + fileName +
                            "</li>";
                 })
@@ -45,7 +44,7 @@ public class MusicListHandler implements HttpHandler {
         "<html>"+
         "<head>"+
             "<meta charset='UTF-8'>"+
-            "<title>ï¿½ï¿½ï¿½Ö²Mï¿½ï¿½</title>"+
+            "<title>­µ¼Ö²M³æ</title>"+
             "<script>"+
                 "let currentAudio = null;"+
                 "let currentButton = null;"+
@@ -54,23 +53,23 @@ public class MusicListHandler implements HttpHandler {
     "if (currentAudio && currentButton === button) {" +
         "if (!currentAudio.paused) {" +
             "currentAudio.pause();" +
-            "button.textContent = 'ï¿½ï¿½ï¿½ï¿½';" +
+            "button.textContent = '¼½©ñ';" +
         "} else {" +
             "currentAudio.play().catch(error => {" +
-                "console.error('ï¿½ï¿½ï¿½ï¿½Éµoï¿½Í¿ï¿½ï¿½~:', error);" +
+                "console.error('¼½©ñ®Éµo¥Í¿ù»~:', error);" +
             "});" +
-            "button.textContent = 'ï¿½È°ï¿½';" +
+            "button.textContent = '¼È°±';" +
         "}" +
     "} else {" +
         "if (currentAudio) {" +
             "currentAudio.pause();" +
-            "currentButton.textContent = 'ï¿½ï¿½ï¿½ï¿½';" +
+            "currentButton.textContent = '¼½©ñ';" +
         "}" +
         "currentAudio = new Audio('/play-music?filePath=' + encodeURIComponent(filePath));" +
         "currentAudio.play().catch(error => {" +
-            "console.error('ï¿½ï¿½ï¿½ï¿½Éµoï¿½Í¿ï¿½ï¿½~:', error);" +
+            "console.error('¼½©ñ®Éµo¥Í¿ù»~:', error);" +
         "});" +
-        "button.textContent = 'ï¿½È°ï¿½';" +
+        "button.textContent = '¼È°±';" +
         "currentButton = button;" +
     "}" +
 "}"+
@@ -80,14 +79,14 @@ public class MusicListHandler implements HttpHandler {
             "</script>"+
         "</head>"+
         "<body>"+
-            "<h1>ï¿½ï¿½ï¿½Ö²Mï¿½ï¿½</h1>"+
+            "<h1>­µ¼Ö²M³æ</h1>"+
             "<ul>" + fileList + "</ul>"+
         "</body>"+
         "<div class=\"buttons-section\">" +
-                "    <button onclick=\"window.location.href='/search'\">ï¿½jï¿½Mï¿½vï¿½ï¿½</button>" +
-                "    <button onclick=\"window.location.href='/download'\">ï¿½Uï¿½ï¿½</button>" +
-                "    <button onclick=\"window.location.href='/downloads-list'\">ï¿½vï¿½ï¿½ï¿½Mï¿½ï¿½</button>" +
-                "    <button onclick=\"window.location.href='/music-list'\">ï¿½ï¿½ï¿½Ö²Mï¿½ï¿½</button>" +
+                "    <button onclick=\"window.location.href='/search'\">·j´M¼v¤ù</button>" +
+                "    <button onclick=\"window.location.href='/download'\">¤U¸ü</button>" +
+                "    <button onclick=\"window.location.href='/downloads-list'\">¼v¤ù²M³æ</button>" +
+                "    <button onclick=\"window.location.href='/music-list'\">­µ¼Ö²M³æ</button>" +
                 "</div>" +
                 "<style>" +
                 ".buttons-section {" +

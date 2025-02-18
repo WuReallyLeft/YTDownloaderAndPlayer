@@ -1,10 +1,10 @@
-package ç¶²é ç‰ˆä¸‹è¼‰æ’¥æ”¾éŸ³æ¨‚å½±ç‰‡;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -13,7 +13,15 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class SearchHandler implements HttpHandler {
-    private static final String API_KEY = "AIzaSyAZpgjPnarZfFYxAg5Fu5ePwEBLURIcAmM"; // ï¿½Ğ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½zï¿½ï¿½ API ï¿½ï¿½ï¿½_
+    private static final String API_KEY = loadApiKey();
+
+    private static String loadApiKey() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("youtube_api.txt"))) {
+            return reader.readLine().trim();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load API key from youtube_api.txt", e);
+        }
+    }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -29,7 +37,7 @@ public class SearchHandler implements HttpHandler {
 
             Gson gson = new Gson();
             JsonObject json = gson.fromJson(requestBody.toString(), JsonObject.class);
-            String query = json.has("query") ? json.get("query").getAsString() : "ï¿½Lï¿½Äªï¿½ï¿½jï¿½Mï¿½rï¿½ï¿½";
+            String query = json.has("query") ? json.get("query").getAsString() : "µL®Äªº·j´M¦rµü";
 
             String apiUrl = String.format(
                     "https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=%s&key=%s&maxResults=5",
@@ -57,25 +65,25 @@ public class SearchHandler implements HttpHandler {
                 <html>
                 <head>
                     <meta charset="UTF-8">
-                    <title>ï¿½jï¿½Mï¿½vï¿½ï¿½</title>
+                    <title>·j´M¼v¤ù</title>
                     <script>
                         async function searchVideos() {
                             const query = document.getElementById('queryInput').value;
                             if (!query) {
-                                alert('ï¿½Ğ¿ï¿½Jï¿½ï¿½ï¿½ï¿½r!');
+                                alert('½Ğ¿é¤JÃöÁä¦r!');
                                 return;
                             }
-    
+
                             const response = await fetch('/search', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ query })
                             });
-    
+
                             const data = await response.json();
                             const resultsContainer = document.getElementById('results');
                             resultsContainer.innerHTML = '';
-    
+
                             if (data.items && data.items.length > 0) {
                                 data.items.forEach(item => {
                                     const video = document.createElement('div');
@@ -85,37 +93,37 @@ public class SearchHandler implements HttpHandler {
                                             <a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank">
                                                 <img src="${item.snippet.thumbnails.default.url}" alt="${item.snippet.title}">
                                             </a>
-                                            <button onclick="downloadVideo('${item.id.videoId}')">ï¿½Uï¿½ï¿½</button>
+                                            <button onclick="downloadVideo('${item.id.videoId}')">¤U¸ü</button>
                                         </div>
                                     `;
                                     resultsContainer.appendChild(video);
                                 });
                             } else {
-                                resultsContainer.innerHTML = '<p>ï¿½Lï¿½jï¿½Mï¿½ï¿½ï¿½Gï¿½C</p>';
+                                resultsContainer.innerHTML = '<p>µL·j´Mµ²ªG¡C</p>';
                             }
                         }
-    
+
                         function downloadVideo(videoId) {
-                            // ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½sï¿½Iï¿½ï¿½ï¿½ï¿½Aï¿½Ç»ï¿½ï¿½vï¿½ï¿½ ID ï¿½ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½Ã¥Bï¿½ï¿½ query string ï¿½Ç»ï¿½ï¿½vï¿½ï¿½ URL
+                            // ¤U¸ü«ö¶sÂIÀ»«á¡A¶Ç»¼¼v¤ù ID ¨ì¤U¸ü­¶­±¡A¨Ã¥B¥Î query string ¶Ç»¼¼v¤ù URL
                             window.location.href = `/download?videoId=${videoId}`;
                         }
                     </script>
                 </head>
                 <body>
-                    <h1>ï¿½jï¿½Mï¿½vï¿½ï¿½</h1>
+                    <h1>·j´M¼v¤ù</h1>
                     <div>
-                        <input type="text" id="queryInput" placeholder="ï¿½ï¿½Jï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½r">
-                        <button onclick="searchVideos()">ï¿½jï¿½M</button>
+                        <input type="text" id="queryInput" placeholder="¿é¤J¼v¤ùÃöÁä¦r">
+                        <button onclick="searchVideos()">·j´M</button>
                     </div>
                     <div id="results"></div>
-    
+
                     <div class="buttons-section">
-                        <button onclick="window.location.href='/search'">ï¿½jï¿½Mï¿½vï¿½ï¿½</button>
-                        <button onclick="window.location.href='/download'">ï¿½Uï¿½ï¿½</button>
-                        <button onclick="window.location.href='/downloads-list'">ï¿½vï¿½ï¿½ï¿½Mï¿½ï¿½</button>
-                        <button onclick="window.location.href='/music-list'">ï¿½ï¿½ï¿½Ö²Mï¿½ï¿½</button>
+                        <button onclick="window.location.href='/search'">·j´M¼v¤ù</button>
+                        <button onclick="window.location.href='/download'">¤U¸ü</button>
+                        <button onclick="window.location.href='/downloads-list'">¼v¤ù²M³æ</button>
+                        <button onclick="window.location.href='/music-list'">­µ¼Ö²M³æ</button>
                     </div>
-                    
+
                     <style>
                         .buttons-section {
                             position: fixed;
@@ -138,7 +146,6 @@ public class SearchHandler implements HttpHandler {
                 </html>
                 """;
     }
-    
 
     private void sendJsonResponse(HttpExchange exchange, String jsonResponse) throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");

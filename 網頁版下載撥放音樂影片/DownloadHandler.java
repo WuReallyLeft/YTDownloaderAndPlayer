@@ -1,4 +1,3 @@
-package ç¶²é ç‰ˆä¸‹è¼‰æ’¥æ”¾éŸ³æ¨‚å½±ç‰‡;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpHandler;
@@ -26,13 +25,13 @@ public class DownloadHandler implements HttpHandler {
 
         String query = exchange.getRequestURI().getQuery();
         String videoId = null;
-        // ï¿½ÑªR URL ï¿½dï¿½ß°Ñ¼Æ¡Aï¿½Ã³Bï¿½zï¿½Ñ½X
+        // ¸ÑªR URL ¬d¸ß°Ñ¼Æ¡A¨Ã³B²z¸Ñ½X
         if (query != null) {
             for (String param : query.split("&")) {
                 if (param.startsWith("videoId=")) {
                     videoId = param.split("=")[1];
                     try {
-                        // ï¿½Ñ½Xï¿½vï¿½ï¿½ ID ï¿½Hï¿½Tï¿½Oï¿½vï¿½ï¿½ï¿½ï¿½ï¿½}ï¿½ï¿½ï¿½T
+                        // ¸Ñ½X¼v¤ù ID ¥H½T«O¼v¤ùºô§}¥¿½T
                         videoUrl = URLDecoder.decode("https://www.youtube.com/watch?v=" + videoId, "UTF-8");
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
@@ -44,7 +43,7 @@ public class DownloadHandler implements HttpHandler {
         }
 
         if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
-            // ï¿½Bï¿½z POST ï¿½Ğ¨Dï¿½Aï¿½q JSON ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½}ï¿½Mï¿½æ¦¡
+            // ³B²z POST ½Ğ¨D¡A±q JSON ¤¤Àò¨úºô§}©M®æ¦¡
             BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), "UTF-8"));
             StringBuilder requestBody = new StringBuilder();
             String line;
@@ -58,22 +57,22 @@ public class DownloadHandler implements HttpHandler {
             format = json.has("format") ? json.get("format").getAsString() : "mp4";
 
             if (!url.isEmpty()) {
-                // ï¿½oï¿½Ì«Oï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Ş¿ï¿½Aï¿½Ï¥Î¼vï¿½ï¿½ï¿½ï¿½ï¿½Dï¿½@ï¿½ï¿½ï¿½É®×¦Wï¿½ï¿½
+                // ³o¸Ì«O«ù§AªºÅŞ¿è¡A¨Ï¥Î¼v¤ù¼ĞÃD§@¬°ÀÉ®×¦WºÙ
                 String savePath = DownloadUtils.getSavePath(url, format);
                 boolean success = DownloadUtils.downloadYouTubeVideo(url, savePath, format);
 
                 if (success) {
-                    response = "ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½\!";
+                    response = "¤U¸ü¦¨¥\!";
                 } else {
-                    response = "ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!";
+                    response = "¤U¸ü¥¢±Ñ!";
                 }
             } else {
-                response = "ï¿½Lï¿½Äªï¿½ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½}!";
+                response = "µL®Äªº¼v¤ùºô§}!";
             }
 
             sendHtmlResponse(exchange, response);
         } else {
-            // ï¿½ï¿½Ü¤Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½Ã±Nï¿½vï¿½ï¿½ï¿½ï¿½ï¿½}ï¿½ï¿½Jï¿½ï¿½Jï¿½ï¿½
+            // Åã¥Ü¤U¸ü­¶­±¡A¨Ã±N¼v¤ùºô§}¶ñ¤J¿é¤J®Ø
             response = generateDownloadPage(videoUrl);
             sendHtmlResponse(exchange, response);
         }
@@ -89,7 +88,7 @@ public class DownloadHandler implements HttpHandler {
         String htmlResponse = "<html>" +
                 "<head>" +
                 "<meta charset=\"UTF-8\">" +
-                "<title>ï¿½Uï¿½ï¿½ï¿½vï¿½ï¿½</title>" +
+                "<title>¤U¸ü¼v¤ù</title>" +
                 "<script>" +
                 "async function download() {" +
                 "    const videoUrl = document.getElementById('videoUrlInput').value;" +
@@ -100,29 +99,29 @@ public class DownloadHandler implements HttpHandler {
                 "        body: JSON.stringify({ url: videoUrl, format: format })" +
                 "    });" +
                 "    if (response.ok) {" +
-                "        alert('ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½\!');" +
+                "        alert('¤U¸ü¦¨¥\!');" +
                 "    } else {" +
-                "        alert('ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!');" +
+                "        alert('¤U¸ü¥¢±Ñ!');" +
                 "    }" +
                 "}" +
                 "</script>" +
                 "</head>" +
                 "<body>" +
-                "<h1>ï¿½Uï¿½ï¿½ï¿½vï¿½ï¿½</h1>" +
+                "<h1>¤U¸ü¼v¤ù</h1>" +
                 "<div>" +
-                "    <input type=\"text\" id=\"videoUrlInput\" value=\"" + decodedVideoUrl + "\" placeholder=\"ï¿½ï¿½Jï¿½vï¿½ï¿½ï¿½ï¿½ï¿½}\">" +
+                "    <input type=\"text\" id=\"videoUrlInput\" value=\"" + decodedVideoUrl + "\" placeholder=\"¿é¤J¼v¤ùºô§}\">" +
                 "    <select id=\"formatSelect\">" +
-                "        <option value=\"mp4\">ï¿½vï¿½ï¿½ (MP4)</option>" +
-                "        <option value=\"mp3\">ï¿½ï¿½ï¿½ï¿½ (MP3)</option>" +
+                "        <option value=\"mp4\">¼v¤ù (MP4)</option>" +
+                "        <option value=\"mp3\">­µ¼Ö (MP3)</option>" +
                 "    </select>" +
-                "    <button onclick=\"download()\">ï¿½Uï¿½ï¿½</button>" +
+                "    <button onclick=\"download()\">¤U¸ü</button>" +
                 "</div>" +
-                "<!-- ï¿½ï¿½ï¿½ï¿½ï¿½É¯ï¿½ï¿½ï¿½s -->" +
+                "<!-- ©³³¡¾É¯è«ö¶s -->" +
                 "<div class=\"buttons-section\">" +
-                "    <button onclick=\"window.location.href='/search'\">ï¿½jï¿½Mï¿½vï¿½ï¿½</button>" +
-                "    <button onclick=\"window.location.href='/download'\">ï¿½Uï¿½ï¿½</button>" +
-                "    <button onclick=\"window.location.href='/downloads-list'\">ï¿½vï¿½ï¿½ï¿½Mï¿½ï¿½</button>" +
-                "    <button onclick=\"window.location.href='/music-list'\">ï¿½ï¿½ï¿½Ö²Mï¿½ï¿½</button>" +
+                "    <button onclick=\"window.location.href='/search'\">·j´M¼v¤ù</button>" +
+                "    <button onclick=\"window.location.href='/download'\">¤U¸ü</button>" +
+                "    <button onclick=\"window.location.href='/downloads-list'\">¼v¤ù²M³æ</button>" +
+                "    <button onclick=\"window.location.href='/music-list'\">­µ¼Ö²M³æ</button>" +
                 "</div>" +
                 "<style>" +
                 ".buttons-section {" +

@@ -1,11 +1,18 @@
-package 網頁版下載撥放音樂影片;
 import java.io.*;
 import java.net.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class DownloadUtils {
-    private static final String API_KEY = "AIzaSyAZpgjPnarZfFYxAg5Fu5ePwEBLURIcAmM"; 
+    private static final String API_KEY = loadApiKey();
+
+    private static String loadApiKey() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("youtube_api.txt"))) {
+            return reader.readLine().trim();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load API key from youtube_api.txt", e);
+        }
+    }
 
     public static String getSavePath(String videoUrl, String format) {
         String videoId = extractVideoIdFromUrl(videoUrl);
@@ -130,22 +137,4 @@ public class DownloadUtils {
         }
     }
 
-
-    // public static boolean downloadYouTubeVideo(String videoUrl, String savePath, String format) {
-    //     try {
-    //         System.out.println("?U???}?l...");
-    //         String command = format.equals("mp3") ?
-    //                 "yt-dlp -x --audio-format mp3 -o \"" + savePath + "\" " + videoUrl :
-    //                 "yt-dlp -f bestvideo+bestaudio --merge-output-format mp4 -o \"" + savePath + "\" " + videoUrl;
-
-    //         // ????R?O?U???v???????
-    //         Process process = new ProcessBuilder(command.split(" ")).start();
-    //         int exitCode = process.waitFor();
-    //         System.out.println("?U??????...");
-    //         return exitCode == 0;
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         return false;
-    //     }
-    // }
 }

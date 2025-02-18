@@ -1,4 +1,3 @@
-package ç¶²é ç‰ˆä¸‹è¼‰æ’¥æ”¾éŸ³æ¨‚å½±ç‰‡;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -18,13 +17,13 @@ public class DownloadsListHandler implements HttpHandler {
         StringBuilder fileListHtml = new StringBuilder();
         String selectedVideo = null;
 
-        // ï¿½ï¿½ï¿½oï¿½ï¤¤ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½]ï¿½pï¿½Gï¿½ï¿½ï¿½^
+        // ¨ú±o¿ï¤¤ªº¼v¤ù¡]¦pªG¦³¡^
         String query = exchange.getRequestURI().getQuery();
         if (query != null && query.startsWith("video=")) {
             selectedVideo = java.net.URLDecoder.decode(query.substring(6), StandardCharsets.UTF_8);
         }
 
-        // ï¿½Í¦ï¿½ï¿½É®×²Mï¿½ï¿½
+        // ¥Í¦¨ÀÉ®×²M³æ
         if (Files.exists(videoDir)) {
             Files.list(videoDir).forEach(path -> {
                 String fileName = path.getFileName().toString();
@@ -34,30 +33,30 @@ public class DownloadsListHandler implements HttpHandler {
                         encodedFileName, fileName));
             });
         } else {
-            fileListHtml.append("<p>ï¿½|ï¿½Lï¿½iï¿½Î¼vï¿½ï¿½ï¿½É®×¡C</p>");
+            fileListHtml.append("<p>©|µL¥i¥Î¼v¤ùÀÉ®×¡C</p>");
         }
 
-        // ï¿½Í¦ï¿½ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ñ¾¹¡]ï¿½pï¿½Gï¿½ï¤¤ï¿½Fï¿½vï¿½ï¿½ï¿½^
+        // ¥Í¦¨¼v¤ù¼½©ñ¾¹¡]¦pªG¿ï¤¤¤F¼v¤ù¡^
         String videoPlayerHtml = "";
         if (selectedVideo != null && !selectedVideo.isEmpty()) {
             videoPlayerHtml = String.format(
                     "<div class='video-player'>" +
-                            "<h2>ï¿½ï¿½ï¿½bï¿½ï¿½ï¿½ï¿½: %s</h2>" +
+                            "<h2>¥¿¦b¼½©ñ: %s</h2>" +
                             "<video controls width='600'>" +
                             "<source src='/videos/%s' type='%s'>" +
-                            "ï¿½zï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä´©ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½C" +
+                            "±zªºÂsÄý¾¹¤£¤ä´©¼v¤ù¼½©ñ¡C" +
                             "</video>" +
                             "</div>",
                     selectedVideo, URLEncoder.encode(selectedVideo, StandardCharsets.UTF_8).replace("+", "%20"),
                     getMimeType(selectedVideo));
         }
 
-        // ï¿½Í¦ï¿½ï¿½ï¿½ï¿½ãªº HTML ï¿½ï¿½ï¿½ï¿½
+        // ¥Í¦¨§¹¾ãªº HTML ­¶­±
         String response = """
                 <html>
                 <head>
                     <meta charset="UTF-8">
-                    <title>ï¿½vï¿½ï¿½ï¿½Mï¿½ï¿½</title>
+                    <title>¼v¤ù²M³æ</title>
                     <style>
                         .container {
                             display: flex;
@@ -93,7 +92,7 @@ public class DownloadsListHandler implements HttpHandler {
                     </style>
                 </head>
                 <body>
-                    <h1>ï¿½vï¿½ï¿½ï¿½Mï¿½ï¿½</h1>
+                    <h1>¼v¤ù²M³æ</h1>
                     <div class="container">
                         <ul class="file-list">
                 """ + fileListHtml + """
@@ -101,16 +100,16 @@ public class DownloadsListHandler implements HttpHandler {
                         """ + videoPlayerHtml + """
                     </div>
                     <div class="buttons-section">
-                        <button onclick="window.location.href='/search'">ï¿½jï¿½Mï¿½vï¿½ï¿½</button>
-                        <button onclick="window.location.href='/download'">ï¿½Uï¿½ï¿½</button>
-                        <button onclick="window.location.href='/downloads-list'">ï¿½vï¿½ï¿½ï¿½Mï¿½ï¿½</button>
-                        <button onclick="window.location.href='/music-list'">ï¿½ï¿½ï¿½Ö²Mï¿½ï¿½</button>
+                        <button onclick="window.location.href='/search'">·j´M¼v¤ù</button>
+                        <button onclick="window.location.href='/download'">¤U¸ü</button>
+                        <button onclick="window.location.href='/downloads-list'">¼v¤ù²M³æ</button>
+                        <button onclick="window.location.href='/music-list'">­µ¼Ö²M³æ</button>
                     </div>
                 </body>
                 </html>
                 """;
 
-        // ï¿½oï¿½e HTML ï¿½^ï¿½ï¿½
+        // µo°e HTML ¦^À³
         exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
         exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
         try (OutputStream os = exchange.getResponseBody()) {
@@ -118,7 +117,7 @@ public class DownloadsListHandler implements HttpHandler {
         }
     }
 
-    // ï¿½Ú¾ï¿½ï¿½É®×°ï¿½ï¿½É¦Wï¿½ï¿½ï¿½o MIME ï¿½ï¿½ï¿½ï¿½
+    // ®Ú¾ÚÀÉ®×°ÆÀÉ¦W¨ú±o MIME Ãþ«¬
     private String getMimeType(String fileName) {
         if (fileName.endsWith(".mp4")) {
             return "video/mp4";

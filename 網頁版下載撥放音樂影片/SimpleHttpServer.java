@@ -1,4 +1,3 @@
-package ç¶²é ç‰ˆä¸‹è¼‰æ’¥æ”¾éŸ³æ¨‚å½±ç‰‡;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
@@ -51,7 +50,7 @@ public class SimpleHttpServer {
         });
 
         server.setExecutor(null); // Creates a default executor
-        System.out.println("ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½wï¿½Ò°Ê¡Aï¿½Ğ³Xï¿½ï¿½ http://localhost:80/search");
+        System.out.println("¦øªA¾¹¤w±Ò°Ê¡A½Ğ³X°İ http://localhost:80/search");
         server.start();
     }
 
